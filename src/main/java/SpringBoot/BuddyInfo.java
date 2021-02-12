@@ -25,14 +25,20 @@ public class BuddyInfo{
     private String name;
 
     /**
+     * The Address
+     */
+    private String homeAddress;
+
+    /**
      * Default Constructor
      */
     public BuddyInfo() {
     }
 
-    public BuddyInfo(String name, String number) {
+    public BuddyInfo(String name, String number, String homeAddress) {
         this.name = name;
         this.phoneNumber = number;
+        this.homeAddress = homeAddress;
     }
 
     public BuddyInfo(BuddyInfo buddyInfo) {
@@ -83,6 +89,18 @@ public class BuddyInfo{
     public void setphoneNumber(String email) {
         this.phoneNumber = email;
     }
+
+    /**
+     * The setter method for address
+     */
+    public void setHomeAddress(String address) {
+        this.homeAddress = address;
+    }
+
+    /**
+     * The getter method for address
+     */
+    public String getHomeAddress() { return this.homeAddress; }
 
     @Override
     public String toString() {

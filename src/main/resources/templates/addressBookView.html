@@ -1,25 +1,27 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Getting Started: Serving Web Content</title>
+        <title>Address Book View</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
     <section th:each="addressBook: ${allBooks}">
-        <h2>Address Book: <th:block th:utext="${addressBook.id}"/></h2>
-        <table class="table">
+        <h2>Book id: <th:block th:utext="${addressBook.getId()}"/></h2>
+        <table border="1">
             <thead>
-            <tr>AddressBook
-                <td>#</td>
-                <td>Name</td>
-                <td>Phone Number</td>
+            <tr>
+                <td>Friend Id</td>
+                <td>Friend Name</td>
+                <td>Friend Phone Number</td>
+                <td>Friend Home Address</td>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="friend: ${addressBook.friends}">
-                <td th:text="${friend.getId()}" />
-                <td th:text="${friend.getName()}" />
-                <td th:text="${friend.getphoneNumber()}" />
+            <tr th:each="buddy: ${addressBook.getFriends()}">
+                <td th:text="${buddy.getId()}" />
+                <td th:text="${buddy.getName()}" />
+                <td th:text="${buddy.getphoneNumber()}" />
+                <td th:text="${buddy.getHomeAddress()}" />
             </tr>
             </tbody>
         </table>

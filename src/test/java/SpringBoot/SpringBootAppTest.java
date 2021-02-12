@@ -67,7 +67,7 @@ public class SpringBootAppTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        BuddyInfo buddyInfo = new BuddyInfo("Muneeb", "613");
+        BuddyInfo buddyInfo = new BuddyInfo("Ivanka", "613", "NYC");
         addressBookMVC.perform(MockMvcRequestBuilders
                 .post("/addressBook-addFriend").param("id", "1")
                 .content(asJsonString(buddyInfo))
@@ -108,7 +108,7 @@ public class SpringBootAppTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        BuddyInfo buddyInfo = new BuddyInfo("Muneeb", "613");
+        BuddyInfo buddyInfo = new BuddyInfo("Muneeb", "613", "Carleton");
         addressBookMVC.perform(MockMvcRequestBuilders
                 .post("/addressBook-addFriend").param("id", "1")
                 .content(asJsonString(buddyInfo))
@@ -122,6 +122,30 @@ public class SpringBootAppTest {
                 MockMvcRequestBuilders.delete("/addressBook-deleteFriend")
                         .param("friendId", "1"))
                 .andExpect(status().isAccepted());
+    }
+
+    @Test
+    public void testAddAddressBookBuddy() throws Exception
+    {
+        AddressBook book = new AddressBook();
+        addressBookMVC.perform(MockMvcRequestBuilders
+                .post("/addressBook-new")
+                .content(asJsonString(book))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        BuddyInfo buddyInfo = new BuddyInfo("Muneeb", "613", "Ottawa, ON");
+        addressBookMVC.perform(MockMvcRequestBuilders
+                .post("/addressBook-addFriend").param("id", "1")
+                .content(asJsonString(buddyInfo))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.friends").exists());
+
     }
 
 

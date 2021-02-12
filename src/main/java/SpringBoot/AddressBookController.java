@@ -53,10 +53,9 @@ public class AddressBookController {
     @PostMapping(path = "/addressBook-addFriend", consumes = "application/json", produces = "application/json")
     @ResponseBody
     ResponseEntity<AddressBook> newFriend(@RequestBody BuddyInfo friend, @RequestParam(name = "id") Long id) {
-        System.out.println("______----------------_____________");
         System.out.println(repository.findAddressBookById(id));
         repository.findAddressBookById(id).addFriend(
-                new BuddyInfo(friend.getName(), friend.getphoneNumber()));
+                new BuddyInfo(friend.getName(), friend.getphoneNumber(), friend.getHomeAddress()));
         repository.save(repository.findAddressBookById(id));
         return new ResponseEntity<>(repository.findAddressBookById(id), HttpStatus.OK);
     }
