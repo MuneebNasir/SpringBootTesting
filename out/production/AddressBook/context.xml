@@ -1,0 +1,13 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <!--    Model and View -->
+    <bean id="BuddyModel" class="BookApp.BuddyModel"></bean>
+    <bean id="AddressBookView" class="BookApp.AddressBookView"></bean>
+
+    <!--    Main Application Controller  -->
+    <bean id="addressBookController" class="BookApp.AddressBookController">
+        <constructor-arg ref = "BuddyModel"/>
+        <constructor-arg ref = "AddressBookView"/>
+    </bean>
+</beans>
