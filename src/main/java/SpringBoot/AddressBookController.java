@@ -69,10 +69,11 @@ public class AddressBookController {
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(path = "/addressBook-deleteFriend", consumes = "application/json", produces = "application/json")
+    @DeleteMapping(path = "/addressBook-deleteFriend")
     @ResponseBody
-    void deleteFriendInBook(@RequestParam(name = "friendId") Long id){
+    ResponseEntity<HttpStatus> deleteFriendInBook(@RequestParam(name = "friendId") Long id){
         buddyRepository.deleteById(id);
+        return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
 
 
