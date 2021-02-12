@@ -1,6 +1,8 @@
 package SpringBoot;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,25 +37,28 @@ public class AddressBookController {
         return repository.findAll();
     }
 
-    @GetMapping(path = "/addressBook", consumes = "application/json", produces = "application/json")
+    @GetMapping(path = "/addressBook/{id}")
     @ResponseBody
-    AddressBook getById(@RequestParam Long id) {
+    AddressBook getById(@PathVariable("id") Long id) {
         return repository.findAddressBookById(id);
     }
 
     @PostMapping(path = "/addressBook-new", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public AddressBook newBook(@RequestBody AddressBook addressBook) {
-        return repository.save(addressBook);
+    public ResponseEntity<AddressBook> newBook(@RequestBody AddressBook addressBook) {
+        repository.save(addressBook);
+        return new ResponseEntity<>(addressBook, HttpStatus.OK);
     }
 
     @PostMapping(path = "/addressBook-addFriend", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    String newFriend(@RequestBody BuddyInfo friend, @RequestParam(name = "id") Long id) {
+    ResponseEntity<AddressBook> newFriend(@RequestBody BuddyInfo friend, @RequestParam(name = "id") Long id) {
+        System.out.println("______----------------_____________");
+        System.out.println(repository.findAddressBookById(id));
         repository.findAddressBookById(id).addFriend(
                 new BuddyInfo(friend.getName(), friend.getphoneNumber()));
         repository.save(repository.findAddressBookById(id));
-        return "SUCCESS";
+        return new ResponseEntity<>(repository.findAddressBookById(id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/addressBook-delete", consumes = "application/json", produces = "application/json")
