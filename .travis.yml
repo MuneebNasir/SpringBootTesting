@@ -4,5 +4,5 @@ jdk:
 
 deploy:
   provider: heroku
-  api_key: 9f9d83b6-9a88-456f-b630-30db6a8383e8
-  app: lippep-spring-boot-test
+  api_key: $HEROKU_API_KEY
+  app: addressbook-springbot
