@@ -6,6 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
+/**
+ * The Address Book Controller
+ * @author Muneeb Nasir
+ * @version 4806.5
+ */
+
 @Controller
 public class AddressBookController {
 
@@ -43,11 +49,11 @@ public class AddressBookController {
 
     @PostMapping(path = "/addressBook-addFriend", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    void newFriend(@RequestBody BuddyInfo friend, @RequestParam(name = "id") Long id) {
+    String newFriend(@RequestBody BuddyInfo friend, @RequestParam(name = "id") Long id) {
         repository.findAddressBookById(id).addFriend(
                 new BuddyInfo(friend.getName(), friend.getphoneNumber()));
         repository.save(repository.findAddressBookById(id));
-
+        return "SUCCESS";
     }
 
     @DeleteMapping(path = "/addressBook-delete", consumes = "application/json", produces = "application/json")

@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * The Address Book Class Updated With Java Persistence Class Handling
  * @author Muneeb Nasir
- * @version 4806.4
+ * @version 4806.5
  */
 @Entity
 public class AddressBook{
