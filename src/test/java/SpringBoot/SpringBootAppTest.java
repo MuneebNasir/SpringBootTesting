@@ -26,11 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class SpringBootAppTest {
 
-    // This will hold the port number the server was started on
-    int port = 8080;
-
-    final TestRestTemplate restTemplate = new TestRestTemplate();
-
     @Autowired
     private MockMvc addressBookMVC;
 
@@ -94,6 +89,13 @@ public class SpringBootAppTest {
                 MockMvcRequestBuilders.delete("/addressBook-delete")
                 .param("id", "1"))
                 .andExpect(status().isAccepted());
+
+        // GET REQUEST to ensure the addressBook is deleted
+        addressBookMVC.perform( MockMvcRequestBuilders
+                .get("/addressBook/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").doesNotExist())
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -122,6 +124,14 @@ public class SpringBootAppTest {
                 MockMvcRequestBuilders.delete("/addressBook-deleteFriend")
                         .param("friendId", "1"))
                 .andExpect(status().isAccepted());
+
+        // GET REQUEST to ensure the specified friend is deleted
+        addressBookMVC.perform( MockMvcRequestBuilders
+                .get("/addressBook/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+                // AddressBook After Deleting the Friend will have an empty list of friends (Only one buddy was added)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.friends").isEmpty());
     }
 
     public static String asJsonString(final Object obj) {
