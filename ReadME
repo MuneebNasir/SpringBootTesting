@@ -1,7 +1,7 @@
 Muneeb Nasir - 101033955
 SYSC 4806
-Lab 5
-Friday Feb 12, 2021
+Lab 6
+Friday Feb 26, 2021
 
 
 Travis CI: 
@@ -16,4 +16,4 @@ Herouku APP:
 
 https://dashboard.heroku.com/apps/addressbook-springboot
 
-https://addressbook-springboot.herokuapp.com/addressBookView
+https://addressbook-springboot.herokuapp.com/addressBooksView

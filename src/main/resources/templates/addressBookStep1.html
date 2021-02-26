@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Address Book View (Step 1)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h2>Book id: <th:block th:utext="${addressBook.getId()}"/></h2>
+<table border="1">
+    <thead>
+    <tr>
+        <td>Friend Id</td>
+        <td>Friend Name</td>
+        <td>Friend Phone Number</td>
+        <td>Friend Home Address</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="buddy: ${addressBook.getFriends()}">
+        <td th:text="${buddy.getId()}" />
+        <td th:text="${buddy.getName()}" />
+        <td th:text="${buddy.getphoneNumber()}" />
+        <td th:text="${buddy.getHomeAddress()}" />
+    </tr>
+    </tbody>
+</table>
+<br>
+<p> Address Book View & Submission Form <a href="/addressBookView">here</a></p>
+
+</body>
+</html>

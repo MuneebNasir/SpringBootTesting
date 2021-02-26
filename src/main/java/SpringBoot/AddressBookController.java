@@ -26,6 +26,7 @@ public class AddressBookController {
     @Autowired
     private BuddyInfoRepository buddyRepository;
 
+    // Step 2
     @GetMapping(path = "/addressBooksView")
     public String addressBookView(Model model) {
 
@@ -37,6 +38,34 @@ public class AddressBookController {
         return "addressBooksView";
     }
 
+    @GetMapping("/addressBookView")
+    // Used for addressBookView HTML (Server-Side) Step 1
+    public String addressBook1(@ModelAttribute BuddyInfo buddy, Model model) {
+
+        Collection<AddressBook> addressBooks = repository.findAll();
+        model.addAttribute("allBooks", addressBooks);
+
+        // Empty Buddy Object - namespace
+        model.addAttribute("newBuddy", new BuddyInfo());
+        return "addressBookView";
+    }
+
+    @PostMapping("/addressBookStep1-add")
+    // Used for addressBookView HTML (Server-Side) Step 1
+    public String addBuddy(@ModelAttribute BuddyInfo buddy, Model model) {
+
+        AddressBook book  = repository.findById(buddy.getBookId()).orElse(new AddressBook());
+
+        book.addFriend(
+                new BuddyInfo(buddy.getName(), buddy.getphoneNumber(), buddy.getHomeAddress()));
+        repository.save(book);
+
+        model.addAttribute("addressBook", book);
+//        model.addAttribute("newBuddy", new BuddyInfo());
+        return "addressBookStep1";
+    }
+
+    // Step 2
     @GetMapping(path = "/addressBooksViewAll", produces = "application/json")
     @ResponseBody
     public RequestResponse addressBooksViewAll() {
@@ -45,6 +74,7 @@ public class AddressBookController {
         return new RequestResponse("OK", addressBooks);
     }
 
+    // Step 2
     @GetMapping(path = "/addressBook-all", produces = "application/json")
     @ResponseBody
     public RequestResponse all() {
@@ -55,6 +85,7 @@ public class AddressBookController {
         return new RequestResponse("OK", bookCollection);
     }
 
+    // Step 2
     @PostMapping(path = "/addressBook-addNewFriend", consumes = "application/json")
     @ResponseBody
     public RequestResponse addNewBuddy(@RequestBody BuddyInfo buddy) {
@@ -104,18 +135,6 @@ public class AddressBookController {
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/addressBookView")
-    public String addBuddy(@ModelAttribute BuddyInfo buddy, Model model) {
-
-        AddressBook book  = repository.findById(buddy.getBookId()).orElse(new AddressBook());
-
-        book.addFriend(
-                new BuddyInfo(buddy.getName(), buddy.getphoneNumber(), buddy.getHomeAddress()));
-        repository.save(book);
-
-        model.addAttribute("addressBook", book);
-        return "addressBookView";
-    }
 
 
 }

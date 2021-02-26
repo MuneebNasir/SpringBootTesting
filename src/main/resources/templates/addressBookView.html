@@ -1,11 +1,12 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Address Book View</title>
+    <meta charset="UTF-8">
+    <title>Address Books</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-
 <body>
+<section th:each="addressBook: ${allBooks}">
     <h2>Book id: <th:block th:utext="${addressBook.getId()}"/></h2>
     <table border="1">
         <thead>
@@ -24,9 +25,29 @@
             <td th:text="${buddy.getHomeAddress()}" />
         </tr>
         </tbody>
-    </table>
-    <br>
-    <p>Complete Address Book View & Submission Form <a href="/addressBooksView">here</a></p>
 
+    </table>
+</section>
+    <table>
+        <tbody>
+        <tr>
+            <br>
+            <br>
+            <h3>Address Book Form</h3>
+            <br>
+            <form action="#" th:action="@{/addressBookStep1-add}" th:object="${newBuddy}" method="post">
+                Name: <input type="text" id="name" th:field="*{name}"> <br>
+                <br>
+                Phone Number: <input type="text" id="phoneNumber" th:field="*{phoneNumber}"> <br>
+                <br>
+                Home Address: <input type="text" id="homeAddress" th:field="*{homeAddress}"> <br>
+                <br>
+                Address Book ID :<input type="text" id="bookID" th:field="*{bookId}"> <br>
+                <br>
+                <button type="submit">Add new buddy</button>
+            </form>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
