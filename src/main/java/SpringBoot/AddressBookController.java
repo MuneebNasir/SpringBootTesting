@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import SpringBoot.RequestResponse;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The Address Book Controller
  * @author Muneeb Nasir
- * @version 4806.5
+ * @version 4806.6
  */
 
 @Controller
@@ -23,18 +26,45 @@ public class AddressBookController {
     @Autowired
     private BuddyInfoRepository buddyRepository;
 
-    @GetMapping(path = "/addressBookView")
+    @GetMapping(path = "/addressBooksView")
     public String addressBookView(Model model) {
 
         Collection<AddressBook> addressBooks = repository.findAll();
         model.addAttribute("allBooks", addressBooks);
-        return "addressBookView";
+
+        // Empty Buddy Object - namespace
+        model.addAttribute("newBuddy", new BuddyInfo());
+        return "addressBooksView";
     }
 
-    @GetMapping(path = "/addressBook-all", consumes = "application/json", produces = "application/json")
+    @GetMapping(path = "/addressBooksViewAll", produces = "application/json")
     @ResponseBody
-    Collection<AddressBook> all() {
-        return repository.findAll();
+    public RequestResponse addressBooksViewAll() {
+
+        Collection<AddressBook> addressBooks = repository.findAll();
+        return new RequestResponse("OK", addressBooks);
+    }
+
+    @GetMapping(path = "/addressBook-all", produces = "application/json")
+    @ResponseBody
+    public RequestResponse all() {
+        ArrayList bookCollection = new ArrayList<>();
+        for (AddressBook book: repository.findAll()){
+            bookCollection.add(book.getId());
+        }
+        return new RequestResponse("OK", bookCollection);
+    }
+
+    @PostMapping(path = "/addressBook-addNewFriend", consumes = "application/json")
+    @ResponseBody
+    public RequestResponse addNewBuddy(@RequestBody BuddyInfo buddy) {
+        AddressBook book  = repository.findById(buddy.getBookId()).orElse(new AddressBook());
+
+        book.addFriend(
+                new BuddyInfo(buddy.getName(), buddy.getphoneNumber(), buddy.getHomeAddress()));
+        repository.save(book);
+
+        return new RequestResponse("OK", book);
     }
 
     @GetMapping(path = "/addressBook/{id}")
@@ -72,6 +102,19 @@ public class AddressBookController {
     ResponseEntity<HttpStatus> deleteFriendInBook(@RequestParam(name = "friendId") Long id){
         buddyRepository.deleteById(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/addressBookView")
+    public String addBuddy(@ModelAttribute BuddyInfo buddy, Model model) {
+
+        AddressBook book  = repository.findById(buddy.getBookId()).orElse(new AddressBook());
+
+        book.addFriend(
+                new BuddyInfo(buddy.getName(), buddy.getphoneNumber(), buddy.getHomeAddress()));
+        repository.save(book);
+
+        model.addAttribute("addressBook", book);
+        return "addressBookView";
     }
 
 

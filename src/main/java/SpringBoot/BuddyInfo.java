@@ -4,14 +4,14 @@ import javax.persistence.*;
 /**
  * Buddy Info Entity Class
  * @author Muneeb Nasir
- * @version 4806.5
+ * @version 4806.6
  */
 
 @Entity
 public class BuddyInfo{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "Id", strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -28,6 +28,11 @@ public class BuddyInfo{
      * The Address
      */
     private String homeAddress;
+
+    /**
+     * Associated Book ID
+     */
+    private Long bookId;
 
     /**
      * Default Constructor
@@ -101,6 +106,15 @@ public class BuddyInfo{
      * The getter method for address
      */
     public String getHomeAddress() { return this.homeAddress; }
+
+    /**
+     * The getter method for address book ID (The Getters/Setters Used By Default by Thymeleaf)
+     */
+    public Long getBookId() { return this.bookId; }
+
+    public void setBookId(int id) {
+        this.bookId = new Long(id);
+    }
 
     @Override
     public String toString() {

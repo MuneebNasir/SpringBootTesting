@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * The Buddy Repository - Interface
  * @author Muneeb Nasir
- * @version 4806.5
+ * @version 4806.6
  */
 
 public interface BuddyInfoRepository extends CrudRepository<BuddyInfo, Long> {
